@@ -25,7 +25,7 @@ AC.BENCH_SLOTS = 8;
 AC.BENCH_SLOT_SIZE = 48;
 
 // ---- UI Zones ----
-AC.TOP_BAR_HEIGHT = 52;
+AC.TOP_BAR_HEIGHT = 60;
 
 // ---- Color Palette (indexed) ----
 AC.PALETTE = {

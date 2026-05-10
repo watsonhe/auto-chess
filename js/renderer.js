@@ -33,7 +33,7 @@ AC.Renderer = {
     this.ctx.strokeRect(Math.floor(x) + 0.5, Math.floor(y) + 0.5, Math.floor(w) - 1, Math.floor(h) - 1);
   },
 
-  text(str, x, y, color = '#ffffff', size = 10, fontFamily = 'monospace', align = 'left') {
+  text(str, x, y, color = '#ffffff', size = 13, fontFamily = 'monospace', align = 'left') {
     this.ctx.fillStyle = color;
     this.ctx.font = `${size}px ${fontFamily}`;
     this.ctx.textAlign = align;
@@ -41,7 +41,7 @@ AC.Renderer = {
     this.ctx.fillText(str, Math.floor(x), Math.floor(y));
   },
 
-  pixelText(str, x, y, color = '#ffffff', size = 8, align = 'left') {
+  pixelText(str, x, y, color = '#ffffff', size = 11, align = 'left') {
     this.ctx.fillStyle = color;
     this.ctx.font = `${size}px "Press Start 2P", monospace`;
     this.ctx.textAlign = align;
@@ -101,13 +101,13 @@ AC.Renderer = {
 
     // Zone labels
     this.ctx.globalAlpha = 0.6;
-    this.pixelText('ENEMY', AC.BOARD_X + 4, AC.BOARD_Y + 4, '#c04040', 6);
-    this.pixelText('敌方', AC.BOARD_X + AC.BOARD_W - 28, AC.BOARD_Y + 4, '#c04040', 5);
+    this.pixelText('ENEMY', AC.BOARD_X + 4, AC.BOARD_Y + 4, '#c04040', 9);
+    this.pixelText('敌方', AC.BOARD_X + AC.BOARD_W - 28, AC.BOARD_Y + 4, '#c04040', 8);
 
-    this.pixelText('NEUTRAL', AC.BOARD_X + 4, AC.BOARD_Y + 3 * AC.CELL_SIZE + 4, '#555555', 5);
+    this.pixelText('NEUTRAL', AC.BOARD_X + 4, AC.BOARD_Y + 3 * AC.CELL_SIZE + 4, '#555555', 8);
 
-    this.pixelText('我方', AC.BOARD_X + 4, AC.BOARD_Y + 5 * AC.CELL_SIZE + 4, '#4080c0', 6);
-    this.pixelText('PLAYER', AC.BOARD_X + AC.BOARD_W - 48, AC.BOARD_Y + 5 * AC.CELL_SIZE + 4, '#4080c0', 5);
+    this.pixelText('我方', AC.BOARD_X + 4, AC.BOARD_Y + 5 * AC.CELL_SIZE + 4, '#4080c0', 9);
+    this.pixelText('PLAYER', AC.BOARD_X + AC.BOARD_W - 48, AC.BOARD_Y + 5 * AC.CELL_SIZE + 4, '#4080c0', 8);
     this.ctx.globalAlpha = 1.0;
   },
 
@@ -161,7 +161,7 @@ AC.Renderer = {
       const starColor = AC.STAR_COLORS[starLevel] || '#aaaaaa';
       const starY = center.y + spriteH / 2 - 6;
       const starStr = '★'.repeat(starLevel);
-      this.text(starStr, center.x, starY, starColor, 8, 'monospace', 'center');
+      this.text(starStr, center.x, starY, starColor, 10, 'monospace', 'center');
     }
     this.ctx.globalAlpha = 1.0;
   },
@@ -211,39 +211,39 @@ AC.Renderer = {
     const y = 8;
 
     // HP
-    this.text('HP', 16, y, '#f04040', 8, '"Press Start 2P"');
-    this.text(p.hp + '', 16, y + 14, '#f04040', 14, 'monospace');
+    this.text('HP', 16, y, '#f04040', 11, '"Press Start 2P"');
+    this.text(p.hp + '', 16, y + 14, '#f04040', 17, 'monospace');
     // HP bar
     this.rect(50, y + 4, 100, 10, '#400000');
     this.rect(50, y + 4, 100 * (p.hp / AC.START_HP), 10, '#f04040');
 
     // Gold
-    this.text('GOLD', 170, y, '#f4d448', 8, '"Press Start 2P"');
-    this.text(p.gold + '', 170, y + 14, '#f4d448', 14, 'monospace');
+    this.text('GOLD', 170, y, '#f4d448', 11, '"Press Start 2P"');
+    this.text(p.gold + '', 170, y + 14, '#f4d448', 17, 'monospace');
 
     // Level
-    this.text('LV', 260, y, '#44aaff', 8, '"Press Start 2P"');
-    this.text(p.level + '', 260, y + 14, '#44aaff', 14, 'monospace');
+    this.text('LV', 260, y, '#44aaff', 11, '"Press Start 2P"');
+    this.text(p.level + '', 260, y + 14, '#44aaff', 17, 'monospace');
 
     // XP
     const xpNeeded = AC.XP_TO_LEVEL[p.level + 1] || 0;
-    this.text('XP', 310, y + 4, '#8888cc', 7, '"Press Start 2P"');
-    this.text(p.xp + '/' + xpNeeded, 310, y + 14, '#8888cc', 10, 'monospace');
+    this.text('XP', 310, y + 4, '#8888cc', 10, '"Press Start 2P"');
+    this.text(p.xp + '/' + xpNeeded, 310, y + 14, '#8888cc', 13, 'monospace');
 
     // Round
-    this.text('ROUND', 430, y, '#e8e8e8', 8, '"Press Start 2P"');
-    this.text(p.round + '', 430, y + 14, '#e8e8e8', 14, 'monospace');
+    this.text('ROUND', 430, y, '#e8e8e8', 11, '"Press Start 2P"');
+    this.text(p.round + '', 430, y + 14, '#e8e8e8', 17, 'monospace');
 
     // Streak
     if (p.winStreak >= 2) {
-      this.text('W' + p.winStreak, 530, y + 8, '#ff8844', 12, 'monospace');
+      this.text('W' + p.winStreak, 530, y + 8, '#ff8844', 15, 'monospace');
     } else if (p.loseStreak >= 2) {
-      this.text('L' + p.loseStreak, 530, y + 8, '#888888', 12, 'monospace');
+      this.text('L' + p.loseStreak, 530, y + 8, '#888888', 15, 'monospace');
     }
 
     // State indicator
     const stateText = AC.state ? AC.state.current : 'LOADING';
-    this.text(stateText, AC.LOGICAL_W - 16, y + 8, '#888888', 8, '"Press Start 2P"', 'right');
+    this.text(stateText, AC.LOGICAL_W - 16, y + 8, '#888888', 11, '"Press Start 2P"', 'right');
   },
 
   // ---- Synergy Panel ----
@@ -260,7 +260,7 @@ AC.Renderer = {
     this.rect(sx, sy, panelW, panelH, '#111118');
     this.rectBorder(sx, sy, panelW, panelH, '#303048');
 
-    this.pixelText('SYNERGIES', sx + 4, sy + 4, '#888888', 6);
+    this.pixelText('SYNERGIES', sx + 4, sy + 4, '#888888', 9);
 
     const activeSyns = AC.Synergy ? AC.Synergy.getActiveSynergies() : [];
     let ty = sy + 16;
@@ -270,9 +270,9 @@ AC.Renderer = {
         ? AC.FACTIONS[syn.key]?.color || '#888'
         : '#c8c8c8';
       this.text(syn.name + ' ' + syn.count + '/' + syn.threshold,
-        sx + 6, ty, color, 8, 'monospace');
-      this.text(syn.effect, sx + 6, ty + 10, '#aaaaaa', 7, 'monospace');
-      ty += 26;
+        sx + 6, ty, color, 11, 'monospace');
+      this.text(syn.effect, sx + 6, ty + 13, '#aaaaaa', 10, 'monospace');
+      ty += 30;
       if (ty > sy + panelH - 20) break;
     }
   },
@@ -283,8 +283,8 @@ AC.Renderer = {
     this.clear();
 
     // Title
-    this.pixelText('AUTO CHESS', AC.LOGICAL_W / 2, 60, '#f4d448', 24, 'center');
-    this.pixelText('蜀 山 幻 世', AC.LOGICAL_W / 2, 96, '#8cb8d4', 14, 'center');
+    this.pixelText('AUTO CHESS', AC.LOGICAL_W / 2, 60, '#f4d448', 30, 'center');
+    this.pixelText('蜀 山 幻 世', AC.LOGICAL_W / 2, 100, '#8cb8d4', 18, 'center');
 
     // Decorative sprites - smaller, above instructions
     this.drawSprite('warrior_sword', 120, 140, 3, true);
@@ -303,7 +303,7 @@ AC.Renderer = {
     this.rect(px, py, pw, ph, '#0e0e18');
     this.rectBorder(px, py, pw, ph, '#303050');
 
-    this.pixelText('HOW TO PLAY', px + pw / 2, py + 12, '#f4d448', 8, 'center');
+    this.pixelText('HOW TO PLAY', px + pw / 2, py + 12, '#f4d448', 11, 'center');
 
     const instructions = [
       { label: '1. 购买棋子', desc: '点击左侧商店购买棋子，费用=星级' },
@@ -316,29 +316,29 @@ AC.Renderer = {
       { label: '8. 胜利条件', desc: '存活30轮即为通关' },
     ];
 
-    let iy = py + 32;
+    let iy = py + 38;
     for (const inst of instructions) {
-      this.text(inst.label, px + 14, iy, '#44aaff', 8, 'monospace');
-      this.text(inst.desc, px + 120, iy, '#aaaacc', 8, 'monospace');
-      iy += 26;
+      this.text(inst.label, px + 14, iy, '#44aaff', 12, 'monospace');
+      this.text(inst.desc, px + 140, iy, '#aaaacc', 12, 'monospace');
+      iy += 30;
     }
 
     // Economy hint
     iy += 6;
     this.rect(px + 12, iy, pw - 24, 1, '#303050');
     iy += 8;
-    this.text('提示：利息每10金币+1收入(上限5)，连胜利有额外金币', px + 14, iy, '#888866', 7, 'monospace');
-    this.text('右键点击棋子可出售，刷新商店花费2金币', px + 14, iy + 16, '#888866', 7, 'monospace');
+    this.text('提示：利息每10金币+1收入(上限5)，连胜利有额外金币', px + 14, iy, '#888866', 10, 'monospace');
+    this.text('右键点击棋子可出售，刷新商店花费2金币', px + 14, iy + 20, '#888866', 10, 'monospace');
 
     // Start prompt
     const alpha = 0.5 + 0.5 * Math.sin(Date.now() / 800);
     this.ctx.globalAlpha = alpha;
-    this.pixelText('>>> CLICK TO START <<<', AC.LOGICAL_W / 2, AC.LOGICAL_H - 50, '#f4d448', 10, 'center');
+    this.pixelText('>>> CLICK TO START <<<', AC.LOGICAL_W / 2, AC.LOGICAL_H - 50, '#f4d448', 13, 'center');
     this.ctx.globalAlpha = 1.0;
 
     // Footer
     this.text('Inspired by 蜀山传 · Pixel Art Auto Battler · 混合中西玄幻风格',
-      AC.LOGICAL_W / 2, AC.LOGICAL_H - 20, '#444444', 7, 'monospace', 'center');
+      AC.LOGICAL_W / 2, AC.LOGICAL_H - 20, '#444444', 10, 'monospace', 'center');
   },
 
   // ---- Game Over Screen ----
@@ -347,25 +347,25 @@ AC.Renderer = {
     // Overlay
     this.rect(0, 0, AC.LOGICAL_W, AC.LOGICAL_H, 'rgba(0, 0, 0, 0.7)');
 
-    this.pixelText('GAME OVER', AC.LOGICAL_W / 2, 180, '#f04040', 20, 'center');
+    this.pixelText('GAME OVER', AC.LOGICAL_W / 2, 180, '#f04040', 26, 'center');
 
     const p = AC.Player;
     if (p) {
-      this.text('Rounds Survived: ' + p.round, AC.LOGICAL_W / 2, 240, '#e8e8e8', 12, 'monospace', 'center');
-      this.text('Final Level: ' + p.level, AC.LOGICAL_W / 2, 260, '#e8e8e8', 12, 'monospace', 'center');
+      this.text('Rounds Survived: ' + p.round, AC.LOGICAL_W / 2, 240, '#e8e8e8', 15, 'monospace', 'center');
+      this.text('Final Level: ' + p.level, AC.LOGICAL_W / 2, 265, '#e8e8e8', 15, 'monospace', 'center');
       this.text('Total Pieces: ' + (p.bench.length + p.board.filter(c => c !== null).length),
-        AC.LOGICAL_W / 2, 280, '#e8e8e8', 12, 'monospace', 'center');
+        AC.LOGICAL_W / 2, 290, '#e8e8e8', 15, 'monospace', 'center');
     }
 
     const alpha = 0.5 + 0.5 * Math.sin(Date.now() / 800);
     this.ctx.globalAlpha = alpha;
-    this.pixelText('CLICK TO PLAY AGAIN', AC.LOGICAL_W / 2, 380, '#888888', 10, 'center');
+    this.pixelText('CLICK TO PLAY AGAIN', AC.LOGICAL_W / 2, 380, '#888888', 13, 'center');
     this.ctx.globalAlpha = 1.0;
   },
 
   // ---- Floating Damage Numbers ----
 
-  drawFloatingText(text, x, y, color = '#ffffff', size = 10) {
+  drawFloatingText(text, x, y, color = '#ffffff', size = 14) {
     this.text(text, x, y, color, size, 'monospace', 'center');
   },
 
@@ -402,9 +402,9 @@ AC.Renderer = {
           this.drawSprite(data.spriteKey, x + 4, y + 4, 2.5, true);
           // Cost
           const costColor = data.tier >= 4 ? '#f4d448' : data.tier >= 3 ? '#44aaff' : '#aaaaaa';
-          this.text(data.tier + 'g', x + slotSize - 16, y + slotSize - 14, costColor, 9, 'monospace', 'right');
+          this.text(data.tier + 'g', x + slotSize - 16, y + slotSize - 14, costColor, 12, 'monospace', 'right');
           // Name
-          this.text(data.nameCN, x + 2, y + slotSize - 14, '#ccc', 7, 'monospace');
+          this.text(data.nameCN, x + 2, y + slotSize - 14, '#ccc', 10, 'monospace');
         }
       }
     }
@@ -414,13 +414,13 @@ AC.Renderer = {
     this._rerollRect = { x: sx, y: rerollY, w: slotSize, h: 28 };
     this.rect(sx, rerollY, slotSize, 28, '#303050');
     this.rectBorder(sx, rerollY, slotSize, 28, '#505070');
-    this.text('⟳ 2g', sx + slotSize / 2, rerollY + 4, '#f4d448', 9, 'monospace', 'center');
+    this.text('⟳ 2g', sx + slotSize / 2, rerollY + 4, '#f4d448', 12, 'monospace', 'center');
 
     // Sell zone
     const sellY = rerollY + 32;
     this.rect(sx, sellY, slotSize, 24, '#402020');
     this.rectBorder(sx, sellY, slotSize, 24, '#603030');
-    this.text('SELL', sx + slotSize / 2, sellY + 2, '#f04040', 8, 'monospace', 'center');
+    this.text('SELL', sx + slotSize / 2, sellY + 3, '#f04040', 11, 'monospace', 'center');
   },
 
   // ---- Bench ----
@@ -437,7 +437,7 @@ AC.Renderer = {
     const gap = 4;
 
     // Label
-    this.text('BENCH', bx, by - 16, '#888888', 8, '"Press Start 2P"');
+    this.text('BENCH', bx, by - 18, '#888888', 11, '"Press Start 2P"');
 
     this._benchRects = [];
 
@@ -453,7 +453,7 @@ AC.Renderer = {
         // Star indicator
         const starStr = '★'.repeat(piece.starLevel);
         this.text(starStr, bx + slotSize / 2, y + slotSize - 12,
-          AC.STAR_COLORS[piece.starLevel], 7, 'monospace', 'center');
+          AC.STAR_COLORS[piece.starLevel], 10, 'monospace', 'center');
       } else {
         this.rect(bx, y, slotSize, slotSize, '#111118');
         this.rectBorder(bx, y, slotSize, slotSize, '#282830');
@@ -481,15 +481,15 @@ AC.Renderer = {
 
     this.rect(bx, by, bw, bh, '#203020');
     this.rectBorder(bx, by, bw, bh, color, 2);
-    this.pixelText('READY', bx + bw / 2, by + 3, color, 8, 'center');
-    this.text(timer + 's', bx + bw / 2, by + 16, color, 10, 'monospace', 'center');
+    this.pixelText('READY', bx + bw / 2, by + 3, color, 11, 'center');
+    this.text(timer + 's', bx + bw / 2, by + 18, color, 14, 'monospace', 'center');
 
     // Prep hint for new players
     if (AC.Player.round <= 2) {
       const hintX = AC.BOARD_X + AC.BOARD_W + 16;
       const hintY = AC.BOARD_Y + AC.BOARD_H - 120;
-      this.text('购买棋子→拖到', hintX, hintY, '#888888', 7, 'monospace');
-      this.text('蓝色区域→READY', hintX, hintY + 12, '#888888', 7, 'monospace');
+      this.text('购买棋子→拖到', hintX, hintY, '#888888', 10, 'monospace');
+      this.text('蓝色区域→READY', hintX, hintY + 14, '#888888', 10, 'monospace');
     }
   },
 
@@ -509,8 +509,8 @@ AC.Renderer = {
 
     this.rect(bx, by, bw, bh, '#102030');
     this.rectBorder(bx, by, bw, bh, color, 1);
-    this.text('BUY XP', bx + bw / 2, by + 3, color, 8, 'monospace', 'center');
-    this.text(AC.XP_COST + 'g → ' + AC.XP_PER_BUY + 'XP', bx + bw / 2, by + 18, color, 7, 'monospace', 'center');
+    this.text('BUY XP', bx + bw / 2, by + 3, color, 11, 'monospace', 'center');
+    this.text(AC.XP_COST + 'g → ' + AC.XP_PER_BUY + 'XP', bx + bw / 2, by + 20, color, 10, 'monospace', 'center');
   },
 
   // ---- Tooltip ----
@@ -569,8 +569,8 @@ AC.Renderer = {
   },
 
   _drawPieceTooltip(piece, mx, my, isEnemy = false) {
-    const w = 170;
-    const h = 110;
+    const w = 200;
+    const h = 130;
     let tx = Math.min(mx + 16, AC.LOGICAL_W - w - 8);
     let ty = Math.min(my + 16, AC.LOGICAL_H - h - 8);
 
@@ -581,10 +581,10 @@ AC.Renderer = {
     const classData = AC.CLASSES[piece.className];
     const starColor = AC.STAR_COLORS[piece.starLevel];
 
-    this.text('★'.repeat(piece.starLevel) + ' ' + piece.nameCN, tx + 6, ty + 4, starColor, 9, 'monospace');
-    this.text(piece.name, tx + 6, ty + 16, '#888', 7, 'monospace');
+    this.text('★'.repeat(piece.starLevel) + ' ' + piece.nameCN, tx + 6, ty + 4, starColor, 12, 'monospace');
+    this.text(piece.name, tx + 6, ty + 18, '#888', 10, 'monospace');
 
-    this.text(factionData.name + ' · ' + classData.name, tx + 6, ty + 28, factionData.color, 8, 'monospace');
+    this.text(factionData.name + ' · ' + classData.name, tx + 6, ty + 32, factionData.color, 11, 'monospace');
 
     // Stats
     const atk = piece.currentAttack();
@@ -592,20 +592,20 @@ AC.Renderer = {
     const hp = piece.currentHP;
     const mhp = piece.currentMaxHP();
 
-    this.text('HP: ' + hp + '/' + mhp, tx + 6, ty + 42, '#40d040', 8, 'monospace');
-    this.text('ATK: ' + atk + '  DEF: ' + def, tx + 6, ty + 54, '#e8e8e8', 8, 'monospace');
-    this.text('SPD: ' + piece.currentAttackSpeed().toFixed(2), tx + 6, ty + 66, '#e8e8e8', 8, 'monospace');
-    this.text('Range: ' + piece.range, tx + 6, ty + 78, '#e8e8e8', 8, 'monospace');
+    this.text('HP: ' + hp + '/' + mhp, tx + 6, ty + 46, '#40d040', 11, 'monospace');
+    this.text('ATK: ' + atk + '  DEF: ' + def, tx + 6, ty + 60, '#e8e8e8', 11, 'monospace');
+    this.text('SPD: ' + piece.currentAttackSpeed().toFixed(2), tx + 6, ty + 74, '#e8e8e8', 11, 'monospace');
+    this.text('Range: ' + piece.range, tx + 6, ty + 88, '#e8e8e8', 11, 'monospace');
 
     if (piece.data.ability) {
       this.text(piece.data.ability.name + ': ' + piece.data.ability.desc,
-        tx + 6, ty + 90, '#f4d448', 7, 'monospace');
+        tx + 6, ty + 102, '#f4d448', 10, 'monospace');
     }
   },
 
   _drawDataTooltip(data, mx, my) {
-    const w = 160;
-    const h = 100;
+    const w = 180;
+    const h = 120;
     let tx = Math.min(mx + 16, AC.LOGICAL_W - w - 8);
     let ty = Math.min(my + 16, AC.LOGICAL_H - h - 8);
 
@@ -616,16 +616,16 @@ AC.Renderer = {
     const classData = AC.CLASSES[data.class];
     const tierColor = data.tier >= 4 ? '#f4d448' : data.tier >= 3 ? '#44aaff' : '#aaaaaa';
 
-    this.text('T' + data.tier + ' ' + data.nameCN, tx + 6, ty + 4, tierColor, 9, 'monospace');
-    this.text(data.name, tx + 6, ty + 16, '#888', 7, 'monospace');
-    this.text(factionData.name + ' · ' + classData.name, tx + 6, ty + 28, factionData.color, 8, 'monospace');
+    this.text('T' + data.tier + ' ' + data.nameCN, tx + 6, ty + 4, tierColor, 12, 'monospace');
+    this.text(data.name, tx + 6, ty + 18, '#888', 10, 'monospace');
+    this.text(factionData.name + ' · ' + classData.name, tx + 6, ty + 32, factionData.color, 11, 'monospace');
 
-    this.text('HP: ' + data.hp[0] + '/' + data.hp[1] + '/' + data.hp[2], tx + 6, ty + 42, '#40d040', 7, 'monospace');
-    this.text('ATK: ' + data.attack[0] + '/' + data.attack[1] + '/' + data.attack[2], tx + 6, ty + 54, '#e8e8e8', 7, 'monospace');
-    this.text('DEF: ' + data.defense[0] + '/' + data.defense[1] + '/' + data.defense[2], tx + 6, ty + 66, '#e8e8e8', 7, 'monospace');
+    this.text('HP: ' + data.hp[0] + '/' + data.hp[1] + '/' + data.hp[2], tx + 6, ty + 48, '#40d040', 10, 'monospace');
+    this.text('ATK: ' + data.attack[0] + '/' + data.attack[1] + '/' + data.attack[2], tx + 6, ty + 62, '#e8e8e8', 10, 'monospace');
+    this.text('DEF: ' + data.defense[0] + '/' + data.defense[1] + '/' + data.defense[2], tx + 6, ty + 76, '#e8e8e8', 10, 'monospace');
 
     if (data.ability) {
-      this.text(data.ability.name, tx + 6, ty + 80, '#f4d448', 7, 'monospace');
+      this.text(data.ability.name, tx + 6, ty + 92, '#f4d448', 10, 'monospace');
     }
   },
 
@@ -642,12 +642,12 @@ AC.Renderer = {
     const won = AC.Player._lastBattleResult;
 
     if (won) {
-      this.pixelText('VICTORY!', cx, cy, '#f4d448', 16, 'center');
+      this.pixelText('VICTORY!', cx, cy, '#f4d448', 20, 'center');
     } else {
       const surviving = AC.Enemy.getSurvivingCount();
       const damage = surviving * AC.HP_DAMAGE_PER_ENEMY;
-      this.pixelText('DEFEAT', cx, cy, '#f04040', 16, 'center');
-      this.text('-' + damage + ' HP', cx, cy + 24, '#f04040', 12, 'monospace', 'center');
+      this.pixelText('DEFEAT', cx, cy, '#f04040', 20, 'center');
+      this.text('-' + damage + ' HP', cx, cy + 28, '#f04040', 15, 'monospace', 'center');
     }
 
     // Income breakdown
@@ -656,11 +656,11 @@ AC.Renderer = {
     const total = AC.BASE_INCOME + interest + streakGold;
 
     this.text('Income: ' + AC.BASE_INCOME + ' + ' + interest + ' (int) + ' + streakGold + ' (streak) = ' + total + 'g',
-      cx, cy + 46, '#f4d448', 9, 'monospace', 'center');
+      cx, cy + 54, '#f4d448', 12, 'monospace', 'center');
 
     const alpha = 0.5 + 0.5 * Math.sin(Date.now() / 600);
     this.ctx.globalAlpha = alpha;
-    this.text('CLICK TO CONTINUE', cx, cy + 72, '#888888', 9, 'monospace', 'center');
+    this.text('CLICK TO CONTINUE', cx, cy + 80, '#888888', 12, 'monospace', 'center');
     this.ctx.globalAlpha = 1.0;
   },
 };
