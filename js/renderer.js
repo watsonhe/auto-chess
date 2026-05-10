@@ -52,36 +52,63 @@ AC.Renderer = {
   // ---- Board ----
 
   drawBoard() {
+    // Zone background fills
+    // Enemy zone (rows 0-2): red-tinted dark
+    this.rect(AC.BOARD_X, AC.BOARD_Y, AC.BOARD_W, 3 * AC.CELL_SIZE, '#1a1015');
+    // Neutral zone (rows 3-4): dark neutral
+    this.rect(AC.BOARD_X, AC.BOARD_Y + 3 * AC.CELL_SIZE, AC.BOARD_W, 2 * AC.CELL_SIZE, '#151518');
+    // Player zone (rows 5-7): blue-tinted dark
+    this.rect(AC.BOARD_X, AC.BOARD_Y + 5 * AC.CELL_SIZE, AC.BOARD_W, 3 * AC.CELL_SIZE, '#10141a');
+
     for (let row = 0; row < AC.BOARD_ROWS; row++) {
       for (let col = 0; col < AC.BOARD_COLS; col++) {
         const x = AC.BOARD_X + col * AC.CELL_SIZE;
         const y = AC.BOARD_Y + row * AC.CELL_SIZE;
         const isDark = (row + col) % 2 === 0;
-        const color = isDark ? AC.PALETTE[26] : AC.PALETTE[27];
 
-        this.rect(x, y, AC.CELL_SIZE, AC.CELL_SIZE, color);
-
-        // Zone tinting
-        if (row >= 5 && row <= 7) {
-          // Player zone - slight blue tint
-          this.rect(x, y, AC.CELL_SIZE, AC.CELL_SIZE, 'rgba(60, 100, 180, 0.08)');
-        } else if (row >= 0 && row <= 2) {
-          // Enemy zone - slight red tint
-          this.rect(x, y, AC.CELL_SIZE, AC.CELL_SIZE, 'rgba(180, 60, 60, 0.08)');
+        let cellColor;
+        if (row >= 5) {
+          // Player zone: blue-tinted cells
+          cellColor = isDark ? '#1a2430' : '#1f2a38';
+        } else if (row <= 2) {
+          // Enemy zone: red-tinted cells
+          cellColor = isDark ? '#2a1818' : '#301f1f';
+        } else {
+          // Neutral zone
+          cellColor = isDark ? '#1c1c1c' : '#242424';
         }
+        this.rect(x, y, AC.CELL_SIZE, AC.CELL_SIZE, cellColor);
       }
     }
 
-    // Zone divider line
-    const midY = AC.BOARD_Y + 3 * AC.CELL_SIZE;
-    this.ctx.strokeStyle = AC.PALETTE[29];
+    // Zone divider lines
+    const midY1 = AC.BOARD_Y + 3 * AC.CELL_SIZE;
+    const midY2 = AC.BOARD_Y + 5 * AC.CELL_SIZE;
+
+    this.ctx.strokeStyle = '#553030';
     this.ctx.lineWidth = 2;
-    this.ctx.setLineDash([8, 4]);
-    this.ctx.beginPath();
-    this.ctx.moveTo(AC.BOARD_X, midY);
-    this.ctx.lineTo(AC.BOARD_X + AC.BOARD_W, midY);
-    this.ctx.stroke();
     this.ctx.setLineDash([]);
+    this.ctx.beginPath();
+    this.ctx.moveTo(AC.BOARD_X, midY1);
+    this.ctx.lineTo(AC.BOARD_X + AC.BOARD_W, midY1);
+    this.ctx.stroke();
+
+    this.ctx.strokeStyle = '#305050';
+    this.ctx.beginPath();
+    this.ctx.moveTo(AC.BOARD_X, midY2);
+    this.ctx.lineTo(AC.BOARD_X + AC.BOARD_W, midY2);
+    this.ctx.stroke();
+
+    // Zone labels
+    this.ctx.globalAlpha = 0.6;
+    this.pixelText('ENEMY', AC.BOARD_X + 4, AC.BOARD_Y + 4, '#c04040', 6);
+    this.pixelText('敌方', AC.BOARD_X + AC.BOARD_W - 28, AC.BOARD_Y + 4, '#c04040', 5);
+
+    this.pixelText('NEUTRAL', AC.BOARD_X + 4, AC.BOARD_Y + 3 * AC.CELL_SIZE + 4, '#555555', 5);
+
+    this.pixelText('我方', AC.BOARD_X + 4, AC.BOARD_Y + 5 * AC.CELL_SIZE + 4, '#4080c0', 6);
+    this.pixelText('PLAYER', AC.BOARD_X + AC.BOARD_W - 48, AC.BOARD_Y + 5 * AC.CELL_SIZE + 4, '#4080c0', 5);
+    this.ctx.globalAlpha = 1.0;
   },
 
   drawCellHighlight(idx, color = '#f8f830', alpha = 0.4) {
@@ -256,24 +283,62 @@ AC.Renderer = {
     this.clear();
 
     // Title
-    this.pixelText('AUTO CHESS', AC.LOGICAL_W / 2, 120, '#f4d448', 24, 'center');
-    this.pixelText('蜀 山 幻 世', AC.LOGICAL_W / 2, 160, '#8cb8d4', 16, 'center');
+    this.pixelText('AUTO CHESS', AC.LOGICAL_W / 2, 60, '#f4d448', 24, 'center');
+    this.pixelText('蜀 山 幻 世', AC.LOGICAL_W / 2, 96, '#8cb8d4', 14, 'center');
 
-    // Subtitle
+    // Decorative sprites - smaller, above instructions
+    this.drawSprite('warrior_sword', 120, 140, 3, true);
+    this.drawSprite('mage_staff', 120, 200, 3, false);
+    this.drawSprite('demon_king', 120, 260, 3, true);
+    this.drawSprite('dragon_knight', 780, 140, 3, false);
+    this.drawSprite('celestial_lord', 780, 200, 3, true);
+    this.drawSprite('monster_beast', 780, 260, 3, false);
+
+    // ---- Instructions Panel ----
+    const px = 200;
+    const py = 140;
+    const pw = 560;
+    const ph = 300;
+
+    this.rect(px, py, pw, ph, '#0e0e18');
+    this.rectBorder(px, py, pw, ph, '#303050');
+
+    this.pixelText('HOW TO PLAY', px + pw / 2, py + 12, '#f4d448', 8, 'center');
+
+    const instructions = [
+      { label: '1. 购买棋子', desc: '点击左侧商店购买棋子，费用=星级' },
+      { label: '2. 放置棋子', desc: '将棋子从备战区拖到下方蓝色棋盘' },
+      { label: '3. 开始战斗', desc: '点击READY按钮或等待计时结束' },
+      { label: '4. 自动战斗', desc: '棋子自动移动、攻击和释放技能' },
+      { label: '5. 羁绊加成', desc: '同阵营/职业达到数量获得属性加成' },
+      { label: '6. 棋子升星', desc: '3个相同棋子自动合成更高星级' },
+      { label: '7. 购买经验', desc: '花费4金币购买4点经验提升等级' },
+      { label: '8. 胜利条件', desc: '存活30轮即为通关' },
+    ];
+
+    let iy = py + 32;
+    for (const inst of instructions) {
+      this.text(inst.label, px + 14, iy, '#44aaff', 8, 'monospace');
+      this.text(inst.desc, px + 120, iy, '#aaaacc', 8, 'monospace');
+      iy += 26;
+    }
+
+    // Economy hint
+    iy += 6;
+    this.rect(px + 12, iy, pw - 24, 1, '#303050');
+    iy += 8;
+    this.text('提示：利息每10金币+1收入(上限5)，连胜利有额外金币', px + 14, iy, '#888866', 7, 'monospace');
+    this.text('右键点击棋子可出售，刷新商店花费2金币', px + 14, iy + 16, '#888866', 7, 'monospace');
+
+    // Start prompt
     const alpha = 0.5 + 0.5 * Math.sin(Date.now() / 800);
     this.ctx.globalAlpha = alpha;
-    this.pixelText('CLICK TO START', AC.LOGICAL_W / 2, 300, '#888888', 10, 'center');
+    this.pixelText('>>> CLICK TO START <<<', AC.LOGICAL_W / 2, AC.LOGICAL_H - 50, '#f4d448', 10, 'center');
     this.ctx.globalAlpha = 1.0;
 
-    // Decorative sprites
-    // Left side - warrior
-    this.drawSprite('warrior_sword', 180, 250, 4, true);
-    // Right side - mage
-    this.drawSprite('mage_staff', 710, 250, 4, false);
-
     // Footer
-    this.text('Inspired by 蜀山传 · Pixel Art Auto Battler',
-      AC.LOGICAL_W / 2, AC.LOGICAL_H - 40, '#555555', 8, 'monospace', 'center');
+    this.text('Inspired by 蜀山传 · Pixel Art Auto Battler · 混合中西玄幻风格',
+      AC.LOGICAL_W / 2, AC.LOGICAL_H - 20, '#444444', 7, 'monospace', 'center');
   },
 
   // ---- Game Over Screen ----
@@ -418,6 +483,14 @@ AC.Renderer = {
     this.rectBorder(bx, by, bw, bh, color, 2);
     this.pixelText('READY', bx + bw / 2, by + 3, color, 8, 'center');
     this.text(timer + 's', bx + bw / 2, by + 16, color, 10, 'monospace', 'center');
+
+    // Prep hint for new players
+    if (AC.Player.round <= 2) {
+      const hintX = AC.BOARD_X + AC.BOARD_W + 16;
+      const hintY = AC.BOARD_Y + AC.BOARD_H - 120;
+      this.text('购买棋子→拖到', hintX, hintY, '#888888', 7, 'monospace');
+      this.text('蓝色区域→READY', hintX, hintY + 12, '#888888', 7, 'monospace');
+    }
   },
 
   drawLevelUpButton() {
