@@ -11,7 +11,6 @@ AC.PieceInstance = class PieceInstance {
     this.starLevel = starLevel;
     this.data = data;
 
-    // Current state
     this.currentHP = this.baseStats().hp;
     this.maxHP = this.baseStats().hp;
     this.attack = this.baseStats().atk;
@@ -21,27 +20,22 @@ AC.PieceInstance = class PieceInstance {
     this.mana = data.mana[0] || 0;
     this.maxMana = data.mana[1] || 0;
 
-    // Battle state
-    this.boardIndex = -1; // -1 = bench, 0-63 = board cell
+    this.boardIndex = -1;
     this.facingRight = true;
     this.attackCooldown = 0;
     this.isDead = false;
 
-    // Synergy bonuses (applied at battle start)
     this.bonusHP = 0;
     this.bonusATK = 0;
     this.bonusDEF = 0;
     this.bonusASPD = 0;
 
-    // Movement animation
     this.animX = 0;
     this.animY = 0;
     this.animTargetX = 0;
     this.animTargetY = 0;
     this.isMoving = false;
   }
-
-  // ---- Computed properties ----
 
   get faction() { return this.data.faction; }
   get className() { return this.data.class; }
@@ -73,8 +67,6 @@ AC.PieceInstance = class PieceInstance {
     return this.attackSpeed + this.bonusASPD;
   }
 
-  // ---- Actions ----
-
   takeDamage(rawDamage) {
     const def = this.currentDefense();
     const multiplier = 100 / (100 + Math.max(0, def));
@@ -85,22 +77,22 @@ AC.PieceInstance = class PieceInstance {
       this.isDead = true;
     }
     return damage;
-  },
+  }
 
   heal(amount) {
     const max = this.currentMaxHP();
     this.currentHP = Math.min(max, this.currentHP + amount);
-  },
+  }
 
   gainMana(amount) {
     if (this.maxMana <= 0) return false;
     this.mana = Math.min(this.maxMana, this.mana + amount);
     return this.mana >= this.maxMana;
-  },
+  }
 
   canCast() {
     return this.maxMana > 0 && this.mana >= this.maxMana;
-  },
+  }
 
   castAbility(target) {
     if (!this.canCast()) return null;
@@ -109,7 +101,7 @@ AC.PieceInstance = class PieceInstance {
       return this.data.ability.onCast(this, target);
     }
     return null;
-  },
+  }
 
   resetForBattle() {
     const base = this.baseStats();
@@ -125,5 +117,5 @@ AC.PieceInstance = class PieceInstance {
     this.bonusDEF = 0;
     this.bonusASPD = 0;
     this.isMoving = false;
-  },
+  }
 };

@@ -10,6 +10,8 @@ AC.Renderer = {
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = AC.LOGICAL_W;
     this.canvas.height = AC.LOGICAL_H;
+    this.canvas.style.width = AC.LOGICAL_W + 'px';
+    this.canvas.style.height = AC.LOGICAL_H + 'px';
     this.ctx.imageSmoothingEnabled = false;
   },
 

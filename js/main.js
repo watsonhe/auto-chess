@@ -30,7 +30,7 @@ window.AC = window.AC || {};
 
     if (!AC.state || AC.state.current === 'MENU') {
       AC.Renderer.drawMenu();
-    } else {
+    } else if (AC.Player) {
       // Board always visible
       AC.Renderer.drawBoard();
 
